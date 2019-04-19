@@ -1,3 +1,19 @@
+<#
+.SYNOPSIS
+    Generic pester tests to look for major show-stoppers
+.DESCRIPTION
+    Generic tests used to provide a consistent approache to high level tests needed across all PowerShell projects.
+    Initial thoughts are to suggest including this repository as a submodule within git projects
+.EXAMPLE
+    PS C:\> <example usage>
+    Explanation of what the example does
+.INPUTS
+    Inputs (if any)
+.OUTPUTS
+    Output (if any)
+.NOTES
+    General notes
+#>
 $ProjectRoot = If ((Split-Path (Resolve-Path .\).path -Leaf) -match 'Test'){
     Resolve-Path $PSScriptRoot\..
 } else {
@@ -9,27 +25,20 @@ $FileSearch = @{
     Include = '*.ps1', '*.psm1', '*.psd1'
     Recurse = $true
 }
-$Scripts = Get-ChildItem @FileSearch
-$Modules = $Scripts | Where-Object {$_.Fullname -match "\.psd1"}
 
-$ValidationDescription = 'Generic project validation with {0} modules' -f @($Modules).count
+# TestCases are splatted to the script so we need them in a hashtable format
+# Due to how Get-ChildItem defaults to displaying text depending on if the results are multi-folder or not, FileName is declared to clean up the "IT" statement
+$FileTestCases = @(Get-ChildItem @FileSearch) | ForEach-Object {
+    @{
+        FileName = $_.Name
+        File = $_
+    }
+}
+$ModuleTestCases = @($FileTestCases | Where-Object { $_.File.Fullname -match "\.psd1"})
+
+$ValidationDescription = 'Generic project validation of {0} files and {1} modules' -f $FileTestCases.count, $ModuleTestCases.count
 
 Describe  $ValidationDescription {
-
-    # TestCases are splatted to the script so we need them in a hashtable format
-    # Due to how Get-ChildItem defaults to displaying text depending on if the results are multi-folder or not, FileName is declared to clean up the "IT" statement
-    $FileTestCases = $Scripts | ForEach-Object {
-        @{
-            FileName = $_.Name
-            File = $_
-        }
-    }
-    $ModuleTestCases = @($FileTestCases | Where-Object { $_.File.Fullname -match "\.psd1"}) #| ForEach-Object {
-    #     @{
-    #         FileName = $_.Name
-    #         File = $_
-    #     }
-    # }
 
     Context 'All PowerShell files should be valid' {
         It '<FileName> should be valid powershell' -TestCases $FileTestCases {
@@ -62,7 +71,8 @@ Describe  $ValidationDescription {
 
     # TODO: Better param name
     # TODO: better way to include secondary tests as necessary
-    # $FileTestTestCases = $Scripts.where{$_.Name -match ".*(.test)\.ps1$" -and $_.Name -notmatch 'ModuleValidation.Tests.ps1'} | ForEach-Object {
+    # $Files = Get-ChildItem @FileSearch
+    # $FileTestTestCases = $Files.where{$_.Name -match ".*(.test)\.ps1$" -and $_.Name -notmatch 'ModuleValidation.Tests.ps1'} | ForEach-Object {
     #     @{
     #         FileName = $_.Name
     #         File = $_
