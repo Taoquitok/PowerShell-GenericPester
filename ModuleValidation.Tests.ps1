@@ -10,15 +10,16 @@
 .NOTES
     This comment block may not make any sense in a .Tests.ps1 file...
 #>
-$ProjectRoot = If ((Split-Path (Resolve-Path .\).path -Leaf) -match 'Test'){
+$ProjectRoot = If ((Split-Path (Resolve-Path $PSScriptRoot).path -Leaf) -match 'Test'){
     Resolve-Path $PSScriptRoot\..
-} elseif ((Split-Path (Resolve-Path .\..\).path -Leaf) -match 'Test') {
+} elseif ((Split-Path (Resolve-Path $PSScriptRoot\..\).path -Leaf) -match 'Test') {
     # Assumption: Used as a submodule within a tests folder
     Resolve-Path $PSScriptRoot\..\..
 } else {
     # Allows test project to validate itself
     Resolve-Path $PSScriptRoot
 }
+
 $FileSearch = @{
     Path    = $ProjectRoot
     Include = '*.ps1', '*.psm1', '*.psd1'
