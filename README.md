@@ -15,3 +15,10 @@ Inspiration for this project came from [Vexx32](https://github.com/vexx32/)'s ow
 ## Usage guide
 
 - [ ] Add example of how to include as a submodule, subtree, and any other useful example
+  
+  ```powershell
+  cd .\tests\
+  git submodule add git@github.com:Taoquitok/PowerShell-GenericPester.git generic
+  cd ..\
+  invoke-pester .\tests\generic\ModuleValidation.Tests.ps1
+  ```
