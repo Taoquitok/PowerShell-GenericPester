@@ -1,11 +1,13 @@
 # PowerShell-StoredCredential README
 
-- [ ] Write the readme
+This generic pester repository is intended for use as a git submodule, or similar, across multiple PowerShell projects.  
 
-- [ ] Add a thank you to one of Vexx32's pester test for inspiring this
+## Background
 
-- [ ] Add notations to the test and example usage
+All of my projects at work use a variant of the [ModuleValidation.Tests.ps1](ModuleValidation.Tests.ps1) file, which over time has had incremental changes which often get missed out of older projects, not to mention some hardcoded values that could be replaced with a dynamic lookup / some generic values.  
+  
+Seeing how many places I've been using this, I felt it was time to create a dedicated git repository that I can reference across all my work to cover the basic tests needed to ensure no obvious errors are committed in a consistent manner.
 
-- [ ] Not sure how possible this is, but maybe update functions that use this as a sub module to have examples that actually work, and have this collect and run examples from Get-Help
-  - If this does work, it could potentially save writing separate tests files
-    - Not sure how good/bad practice this would be, but this would be testing by design with the tests following the functions internally
+## Inspiriation
+
+Inspiration for this project came from [Vexx32](https://github.com/vexx32/)'s own [ModuleValidation.Tests.ps1]([ModuleValidation.Tests.ps1](https://github.com/vexx32/PSKoans/blob/master/Tests/ModuleValidation.Tests.ps1))

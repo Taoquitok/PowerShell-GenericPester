@@ -8,7 +8,7 @@
     PS C:\> <example usage>
     Explanation of what the example does
 .NOTES
-    General notes
+    This comment block may not make any sense in a .Tests.ps1 file...
 #>
 $ProjectRoot = If ((Split-Path (Resolve-Path .\).path -Leaf) -match 'Test'){
     Resolve-Path $PSScriptRoot\..
