@@ -7,10 +7,6 @@
 .EXAMPLE
     PS C:\> <example usage>
     Explanation of what the example does
-.INPUTS
-    Inputs (if any)
-.OUTPUTS
-    Output (if any)
 .NOTES
     General notes
 #>
@@ -28,7 +24,8 @@ $FileSearch = @{
 
 # TestCases are splatted to the script so we need them in a hashtable format
 # Due to how Get-ChildItem defaults to displaying text depending on if the results are multi-folder or not, FileName is declared to clean up the "IT" statement
-$FileTestCases = @(Get-ChildItem @FileSearch) | ForEach-Object {
+$PSFiles = @(Get-ChildItem @FileSearch)
+$FileTestCases = $PSFiles | ForEach-Object {
     @{
         FileName = $_.Name
         File = $_
@@ -69,23 +66,36 @@ Describe  $ValidationDescription {
         }
     }
 
-    # TODO: Better param name
-    # TODO: better way to include secondary tests as necessary
-    # $Files = Get-ChildItem @FileSearch
-    # $FileTestTestCases = $Files.where{$_.Name -match ".*(.test)\.ps1$" -and $_.Name -notmatch 'ModuleValidation.Tests.ps1'} | ForEach-Object {
-    #     @{
-    #         FileName = $_.Name
-    #         File = $_
-    #     }
-    # }
+    # TODO: Better param name?
+    $TestFilesTestCases = $PSFiles | Where-Object {
+        $_.Name -match ".*\.Tests\.ps1$" -and
+        -not $_.Name -match '^ModuleValidation.Tests.ps1$'
+    } | ForEach-Object {
+        @{
+            FileName = $_.Name
+            File = $_
+        }
+    }
 
-    # Context 'For functions with personal tests, tests should succeed' {
-    #     It '<FileName> should run' -TestCases $FileTestTestCases {
-    #         param($File)
+    If ($TestFilesTestCases) {
+        Context 'For functions with personal tests, tests should succeed' {
+            It '<FileName> tests should pass' -TestCases $TestFilesTestCases {
+                param($File)
 
-    #         # NOTE: This does weird stuff... Presumably there's a more appropriate way to include more test files
-    #         Invoke-Pester $File.FullName -PassThru
-    #     }
+                $FileToTest = $File.FullName -replace '\.Tests\.', '.'
+                # IDEA: Confirm $FileToTest is actually a real file?
+                # CONFIRM this works as expected
+                Invoke-Pester -Script $File.FullName | Should -not -throw
+            }
+            # Commented out codecoverage test as I'm unsure how useful it would be by default
+            # It '<FileName> should pass a CodeCoverage check' -TestCases $TestFilesTestCases {
+            #     param($File)
 
-    # }
+            #     $FileToTest = $File.FullName -replace '\.Tests\.', '.'
+            #     # IDEA: Confirm $FileToTest is actually a real file?
+            #     # CONFIRM this works as expected
+            #     Invoke-Pester -CodeCoverage $FileToTest -PassThru
+            # }
+        }
+    }
 }
