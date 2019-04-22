@@ -10,4 +10,4 @@ Seeing how many places I've been using this, I felt it was time to create a dedi
 
 ## Inspiriation
 
-Inspiration for this project came from [Vexx32](https://github.com/vexx32/)'s own [ModuleValidation.Tests.ps1]([ModuleValidation.Tests.ps1](https://github.com/vexx32/PSKoans/blob/master/Tests/ModuleValidation.Tests.ps1))
+Inspiration for this project came from [Vexx32](https://github.com/vexx32/)'s own [ModuleValidation.Tests.ps1](https://github.com/vexx32/PSKoans/blob/master/Tests/ModuleValidation.Tests.ps1)
