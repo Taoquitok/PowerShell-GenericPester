@@ -1,4 +1,2 @@
 # IDE folders
 .vscode
-# Ignore all other test files in this folder
-*.Tests.ps1

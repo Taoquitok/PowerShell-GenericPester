@@ -12,6 +12,9 @@
 #>
 $ProjectRoot = If ((Split-Path (Resolve-Path .\).path -Leaf) -match 'Test'){
     Resolve-Path $PSScriptRoot\..
+} elseif ((Split-Path (Resolve-Path .\..\).path -Leaf) -match 'Test') {
+    # Assumption: Used as a submodule within a tests folder
+    Resolve-Path $PSScriptRoot\..\..
 } else {
     # Allows test project to validate itself
     Resolve-Path $PSScriptRoot
