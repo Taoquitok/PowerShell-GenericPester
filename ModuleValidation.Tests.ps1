@@ -72,7 +72,7 @@ Describe  $ValidationDescription {
     # TODO: Better param name?
     $TestFilesTestCases = $PSFiles | Where-Object {
         $_.Name -match ".*\.Tests\.ps1$" -and
-        -not $_.Name -match '^ModuleValidation.Tests.ps1$'
+        $_.Name -notmatch '^ModuleValidation.Tests.ps1$'
     } | ForEach-Object {
         @{
             FileName = $_.Name
