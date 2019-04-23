@@ -86,9 +86,8 @@ Describe  $ValidationDescription {
             It '<FileName> tests should pass' -TestCases $TestFilesTestCases {
                 param($File)
 
-                $FileToTest = $File.FullName -replace '\.Tests\.', '.'
-                # IDEA: Confirm $FileToTest is actually a real file?
-                # CONFIRM this works as expected
+                # CONSIDER confirming $File.FullName is actually a real file?
+                # CONSIDER "-Show" none/fails/failed/other limitations to reduce unnecessary output
                 (Invoke-Pester -Script $File.FullName -PassThru).TestResult.passed | Should -not -Contain $false
             }
             # Commented out codecoverage test as I'm unsure how useful it would be by default

@@ -1,4 +1,4 @@
-# PowerShell-StoredCredential README
+# PowerShell-GenericPester README
 
 This generic pester repository is intended for use as a git submodule, subtree, or similar, across multiple PowerShell projects
 
